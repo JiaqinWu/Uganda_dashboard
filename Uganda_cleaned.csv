@@ -1,0 +1,127 @@
+﻿Module,Part,Question,ROM,UCMB,UPMB,UMMB,AIC
+One, Governance,"Q1. Is the organization legally constituted, registered?",5,5,5,5,5
+One, Governance,Q2. Does the organization have a board of governors with diverse expertise?,5,5,5,4,5
+One, Governance,Q3. Does the organization have a defined process and criteria for selecting and vetting board members? Describe the process,5,5,5,5,5
+One, Governance,Q4. Does the board meet regularly with an agenda and meeting minutes?,5,5,5,5,5
+One, Governance,"Q5. Does the organization have a defined mission, vision, core values that are used to set strategic priorities? Are these reviewed regularly?",5,5,5,5,4
+One, Governance,"Q6. Does the board perform the following key functions:
+    1. Compliance, legal and ethical integrity
+    2. Financial oversight and accountability
+Adequate resources to drive strategy",4,3,5,4,3
+One, Governance,"Q7. Does the board establish and maintain collaborative, effective relationships with key partners, donors, stakeholders and the public? How?",1,1,5,5,3
+One,Organization Leadership,Q1. Mission and vision,5,5,5,4,4
+One,Organization Leadership,Q2. Strategic leadership,4,5,5,1,1
+One,Organization Leadership,Q3. Performance evaluation and use of results,5,5,5,1,1
+One,Organization Leadership,Q4. Board composition and qualification,5,4,5,5,3
+One,Organization Leadership,Q5. Strategic planning and monitoring,5,5,5,2,5
+One,Organization Leadership,Q6. Strategic planning and capacity to organizational priorities,5,5,5,3,5
+One,Organization Leadership,"Q7. Engagement, feedback to management, Norms and values",5,4,5,3,4
+One,Organization Leadership,Q8. Management and Operations Capacity,4,5,5,2,3
+One,Technical Leadership,"Q1. Does the identified leader(s) have the technical expertise and experience managing prevention, care and treatment services?",4,5,5,4,5
+One,Technical Leadership,"Q2. Does the leadership need assistance in setting up prevention, care and treatment services?",4,5,5,2,5
+One,Technical Leadership,Q3. Is the leadership engaged in capacity building for care and treatment programs?,4,5,5,2,3
+One,Technical Leadership,Q4. Does the leader(ship) sit on national/local care and treatment services coordinating bodies and/or TWGs?,5,4,5,3,5
+One,Technical Leadership,Q5. Is the identified leader(ship) used as a resource by other care and treatment programs?,4,3,5,3,4
+Two,Program Planning,"Q1. The organization has specific and standardized program management structures, processes and tools that are documented",4,3,5,3,4
+Two,Program Planning,"Q2. Essential project award documents (i.e. contracts, project scope, approved work plans, budget) are available, up to date and accessible to relevant team members",4,4,5,2,4
+Two,Program Planning,Q3. Annual work plans are collaboratively developed with inputs from key stakeholders and team members,3,5,4,3,4
+Two,Program Planning,"Q4. The work plan considers and aligns with the available budget (funding), time and required resources (HR, etc.) (Assessor should review the workplan and ensure alignment with budget/scope)",5,5,5,2,5
+Two,Program Planning,"Q5. Relevant program documents such as the ones below are all developed and disseminated to appropriate staff during start up
+-    Theory of change/LF
+-    Risk and Mitigation plan
+-    Performance Monitoring Plan
+-    Procurement Plan
+-    IRB/ethical reviews
+-    HR Plan
+-    Communication Plan
+-    Strategic Plan",4,2,4,2,4
+Two,Program Planning,"Q6. Prior to working on a project, relevant staff are oriented on the award document, project deliverables, terms and conditions, rules and regulations, reporting requirements etc.",5,5,5,3,4
+Two,Program Implementation,"Q1. A clear program structure is in place to support implementation, including people responsible to complete and monitor all program deliverables",5,5,5,2,5
+Two,Program Implementation,Q2. The organization ensures that all staff hired meet the job description (JD) requirements and qualifications for program management and delivery,5,5,5,3,5
+Two,Program Implementation,Q3. The organization ensures that there are adequate numbers of staff required to meet program management and delivery (staffing norms are aligned with scope),5,3,3,2,3
+Two,Program Implementation,"Q4. Finance and project management leadership staff have been trained on USG management processes and requirements. (If yes, who/ how many, include in comments)",2,2,3,1,3
+Two,Program Implementation,"Q5. Finance, project management leadership staff have been trained on other donor management processes and requirements. (If yes, who/ how many, include in comments)",2,2,2,1,2
+Two,Program Implementation,"Q6. There is an established process for project teams to meet regularly and evaluate project performance and challenges and minutes are archived.
+
+(Includes project management, clinical management, senior management)",5,5,5,4,5
+Two,Program Implementation,"Q7. There is an established process to document and disseminate changes in implementation over time (key changes in targets, budget, contracts, deliverables, etc.)",2,3,4,1,1
+Two,Program Implementation,Q8. The organization has processes in place to manage and mitigate program delivery risks (risk management and mitigation plans),3,2,3,1,3
+Two,Program Implementation,"Q9. Project close out protocols/check lists in place, including clear transition planning",2,4,2,1,1
+Two,Program Reporting,"Q1. Routine/monthly performance data is reviewed, verified, and used for program management and program quality improvement, including non-technical areas like fleet management",5,5,5,3,5
+Two,Program Reporting,Q2. Program reports track workplan/budget progress and indicators,5,5,5,4,4
+Two,Program Reporting,Q3. There is a process that ensures appropriate persons review and verify project reports prior to submission to donor/stakeholders to ensure quality,4,5,5,2,4
+Two,Program Reporting,"Q4. As a whole, does the governing body communicate effectively with the Managing Director/Chief Executive?",5,5,5,4,5
+Two,Program Reporting,"Q5. Program reports are used internally and help the organization to review strategies and activities, identify constraints and opportunities, formulate lessons learned and good practices.",4,5,5,3,5
+Two,Program Reporting,"Q6. Financial expenditures routinely reviewed, including burn rates, pipeline, accruals",5,5,5,3,2
+Two,Knowledge Management,"Q1. A communications plan is developed at the project outset and shared with relevant team members (including branding, marketing)",5,1,4,1,4
+Two,Knowledge Management,Q2. Relevant program implementation progress and updates are routinely shared with stakeholders and program beneficiaries and obtain their inputs to inform program changes,5,3,5,2,5
+Two,Knowledge Management,"Q3. Meetings with key stakeholders such as Ministry of Health, CDC and other donors are held regularly to provide updates on implementation and obtain their inputs to inform program changes",5,2,5,3,5
+Two,Program Performance,Q1. Have there been any compliance issues raised by any donor?,5,4,4,5,3
+Two,Program Performance,"Q2. How have donors (including government and private sector) rated the programs or projects of the organization
+	Describe evidence supporting this rating",5,1,3,1,4
+Two,Program Performance,"Q3. How have beneficiaries/clients rated the programs or projects of the organization
+	Describe evidence supporting this rating",5,4,3,1,5
+Two,Program Performance,Q4. What percent of project results targets have been met on time and on budget?,5,4,5,5,5
+Three,Service Delivery Standards,Q1. What is the program approach to care and treatment (C&T) service delivery?,4,5,4,4,5
+Three,Service Delivery Standards,"Q2. Has the organization adopted recognized international, national standard operating procedures for HIV service delivery?",5,5,5,5,5
+Three,Service Delivery Standards,Q3. The process whereby C&T beneficiaries are selected,5,5,4,5,5
+Three,Service Delivery Standards,Q4. Activities/process towards minimizing stigma/discrimination in C&T activities,5,5,5,3,5
+Three,Service Delivery Standards,Q5. Activities/process towards addressing gender mainstreaming in HIV service delivery,5,5,5,2,5
+Three,Service Delivery Standards,Q6. Provides services in a physical environment that conforms to national and international minimum standards,3,5,2,2,3
+Three,Service Delivery Standards,Q7. Process employed in attracting users to services provided,5,5,5,3,5
+Three,Service Delivery Standards,Q8. The extent to which the community is involved in the decision-making regarding services provided,5,5,5,4,4
+Three,Service Delivery Standards,Q9. Organization links with other service providers for the benefit of its clients,5,5,5,3,5
+Three,Service Delivery Standards,Q10. Internal skills building conducted by the organization,4,5,4,2,5
+Three,Service Delivery Standards,Q11. Is there an identified technical leader or leadership team within the organization who is responsible for providing overall technical direction service delivery and treatment programs?,5,5,5,4,5
+Three,Service Delivery Standards,Q12. Are HIV services integrated with other health care services (describe),4,5,4,4,3
+Three,Service Delivery Standards,Q13. Activities can be implemented long-term beyond the life of specific projects (sustainability),3,4,5,3,2
+Three,Service Delivery Standards,Q14. The organization has capacity to collect and manage data accurately,4,5,4,3,5
+Three,Service Delivery Standards,Q15. Does the organization have a data quality assurance and improvement process?,4,5,5,3,4
+Three,Service Delivery Standards,Q16. Have relevant staff been trained on national clinical standards and how to achieve them?,3,5,5,4,5
+Three,Service Delivery Standards,Q17. How often are staff trained on national clinical standards and use?,5,5,2,5,5
+Three,Service Delivery Standards,Q18. Are national service delivery standards consistently applied?,5,5,5,4,5
+Three,Service Delivery Standards,Q19. Are national service delivery standards consistently monitored?,4,5,4,3,5
+Three,Service Delivery Standards,Q20. Is patient confidentiality maintained during all patient/provider interactions?,4,5,5,4,3
+Three,Human Resources For Health - Organization,Q1. Are staff professional development needs regularly identified?,5,5,5,4,5
+Three,Human Resources For Health - Organization,Q2. Are there structured skills needs assessment tools to identify areas for capacity building?,5,5,5,3,5
+Three,Human Resources For Health - Organization,Q3. Are there any organization-specific skills building activities being conducted?,4,5,5,3,5
+Three,Human Resources For Health - Organization,Q4. Are the skills building activities based on a needs assessment?,5,4,5,3,5
+Three,Human Resources For Health - Organization,Q5. Are appropriate curricula used?,4,5,5,4,4
+Three,Human Resources For Health - Organization,Q6. Is there a mechanism to evaluate the relevance and effectiveness of the skills building activities conducted?,4,4,4,4,4
+Three,Human Resources For Health - Organization,Q7. How well is the organization able to work with targeted communities?,5,5,5,4,5
+Three,Human Resources For Health - Organization,Q8. Is the composition of the community reflected in the organization?,5,5,5,4,4
+Three,Human Resources For Health - Health Facilities,Q1. HRH planning and deployment aligns with the MOH HRH Strategic Plan,2,5,3,4,4
+Three,Human Resources For Health - Health Facilities,"Q2. HRH data is collected for the health facilities you support, including number of health workers, in-service training needs, etc.",3,3,3,3,4
+Three,Human Resources For Health - Health Facilities,Q3. HRH data is reviewed and used to inform decision making,3,3,4,3,4
+Four,Information Technology,Q1. Describe the information technology systems of the organization,3,3,5,2,5
+Four,Information Technology,"Q2. Are IT systems adequate for the current staff size, including expected growth over the next year?",4,3,4,2,4
+Four,Information Technology,Q3. Are IT systems networked? Are IT systems backed up?,4,3,5,2,5
+Four,Organizational Technology & Operations,Q1. There is a formal and organized medical records system at the facilities,4,3,3,3,4
+Four,Organizational Technology & Operations,Q2. Our organization uses up-to-date technology to support its operations,3,3,4,3,4
+Four,Organizational Technology & Operations,Q3. Our physical workplace infrastructure for data security is secure and reliable,3,4,4,3,5
+Four,Organizational Technology & Operations,Q4. Our organization adapts to emerging technologies to maintain high performance,4,1,4,3,4
+Four,Organizational Technology & Operations,Q5. Employees receive adequate training and support to use technology effectively in their role,4,2,5,4,3
+Four,Organizational Technology & Operations,Q6. The physical space is adequate for effective implementation of our work-related responsibilities,4,5,2,2,3
+Four,Data Use For Decision-Making,Q1. Organization has and uses data management tools,5,3,5,2,4
+Four,Data Use For Decision-Making,Q2. What data sources do you use for programmatic decision making?,4,4,4,3,5
+Four,Data Use For Decision-Making,"Q3. How is data collected, organized, managed within the org?",4,4,5,3,4
+Four,Data Use For Decision-Making,Q4. How are these metrics used to assess program effectiveness and efficiency?,5,4,5,3,5
+Four,Data Use For Decision-Making,"Q5. Are there established protocols for ensuring data accuracy, reliability, and integrity?",5,3,5,2,5
+Four,Data Use For Decision-Making,Q6. How frequently is data analyzed to inform programmatic decisions?,5,4,5,2,4
+Four,Data Use For Decision-Making,Q7. There are trained staff members responsible for data analysis and interpretation,4,3,5,3,5
+Four,Data Use For Decision-Making,Q8. Are stakeholders provided with opportunities to contribute insights and perspectives based on data?,5,5,5,4,5
+Four,Data Use For Decision-Making,Q9. The organization is responsive to changes in data trends or emerging issues.,4,3,5,4,5
+Four,Data Use For Decision-Making,"Q10. Does the organization have evaluations of its projects and programs? If so, how often? Were evaluations internal or external?",3,4,5,4,4
+Four,Data Use For Decision-Making,Q11. Are evaluation findings shared widely with the organization?,4,5,5,4,4
+Four,Data Use For Decision-Making,Q12. Do staff have a good ability to review the quality of evaluations and address the findings and recommendations in existing and new programs?,4,2,5,4,3
+Five,Stakeholder Involvement,Q1. Stakeholders are actively involved in project design and program implementation.,4,3,4,3,4
+Five,Stakeholder Involvement,Q2. Are there clear channels of communication that can be used by stakeholders to raise issues?,4,2,5,3,4
+Five,Stakeholder Involvement,"Q3. Does the org share findings, recommendations of assessments, studies, plans and evaluations with key stakeholders?",4,3,5,4,5
+Five,Resource Mobilization,Q1. Does the org have sufficient financial resources to continue existing programs next year without new donor funding?,1,1,3,1,1
+Five,Resource Mobilization,Q2. Does the org have sufficient financial resources to continue existing programs in the next 5 years without new donor funding?,1,1,3,1,1
+Five,Resource Mobilization,Q3. How would the organization weather an unexpected reduction in funding?,2,2,4,1,2
+Five,HIV Integration And Sustainability,Q1. Is there a current framework for integrating HIV services into public/private health systems?,3,1,3,2,3
+Five,HIV Integration And Sustainability,Q2. Does the organization have established guidelines or protocols for HIV service delivery integration?,4,1,4,2,4
+Five,HIV Integration And Sustainability,Q3. Are there initiatives to strengthen health information exchange for improved service coordination and continuity of care?,3,2,4,3,2
+Five,Partnerships,Q1. Are you working collaboratively with the government towards sustainability?,1,2,5,4,3
+Five,Partnerships,Q2. How are partnerships leveraged for service delivery and/or to identify innovative financing opportunities?,3,4,2,2,1
