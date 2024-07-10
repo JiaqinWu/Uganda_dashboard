@@ -33,13 +33,29 @@ def app():
     # Sidebar for selection
     program_selected = st.sidebar.selectbox('Select Program', df['Program'].unique())
     module_selected = st.sidebar.selectbox('Select Module', df['Module'].unique())
-    part_selected = st.sidebar.selectbox('Select Part', df[df['Module'] == module_selected]['Part'].unique())
-    questions_selected = st.sidebar.multiselect('Select Questions', options=df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique(), default=df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique()[0])
+    part_selected = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected]['Part'].unique())
+    available_questions = df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique()
+    
+    # Initialize session state
+    if 'questions_selected' not in st.session_state:
+        st.session_state.questions_selected = [available_questions[0]]
+
+    questions_selected = st.sidebar.multiselect('Select Questions', options=available_questions, default=st.session_state.questions_selected)
+
+    # Update session state
+    st.session_state.questions_selected = questions_selected
+
+    if st.sidebar.button('Select All Questions'):
+        # Update the multiselect widget indirectly via session state
+        st.session_state.questions_selected = available_questions
+        st.experimental_rerun()
+
     if questions_selected:
         st.sidebar.markdown("### You selected:")
         st.sidebar.markdown("* " + "\n* ".join(questions_selected))
     else:
         st.sidebar.write("No questions selected")
+        
     search_button = st.sidebar.button("Search")
 
     if search_button: 
