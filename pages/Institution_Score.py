@@ -1,17 +1,27 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import plotly.graph_objects as go
 import altair as alt 
 
 # Import the dataset
 image = "CGHPI.png"
-df1 = pd.read_csv('Uganda_cleaned.csv')
-df = df1.melt(id_vars=["Module", "Part", "Question"], var_name="Program", value_name="Score")[:555]
+df = pd.read_csv('final_uganda.csv', encoding='ISO-8859-1')
 df.head()
 df['Module'] = df['Module'].replace('One','One: Leadership and Governance').replace('Two','Two: Program Management').replace('Three','Three: Technical Assistance').\
 replace('Four','Four: Data Use').replace("Five","Five: Sustainability")
+# Define conditions and choices for the text labels
+conditions = [
+    df['Score'] == 1,
+    df['Score'] == 2,
+    df['Score'] == 3,
+    df['Score'] == 4,
+    df['Score'] == 5
+]
+choices = ['Nonexistent', 'Basic', 'Adequate', 'Comprehensive', 'Exceptional']
 
-
+# Apply conditions and choices
+df['Level'] = np.select(conditions, choices, default='Not Applicable')
 
 # Streamlit application
 def app():
@@ -26,37 +36,39 @@ def app():
         st.image(image, width=130)
 
     with col2:
-        st.title('🇺🇬 Vertical Comparison -- Uganda SCORE Survey')
+        st.title('🇺🇬 Institution Score -- Uganda SCORE Survey')
         st.sidebar.title('Enter your selections here!')
 
     # Sidebar for selection
-    # Sidebar for selection
-    program_selected = st.sidebar.selectbox('Select Program', df['Program'].unique())
+    program_selected = st.sidebar.selectbox('Select Institution', df['Program'].unique())
     module_selected = st.sidebar.selectbox('Select Module', df['Module'].unique())
     part_selected = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected]['Part'].unique())
+    st.sidebar.markdown(f"#### You selected: {part_selected}")
     available_questions = df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique()
     
-    # Initialize session state
-    if 'questions_selected' not in st.session_state:
+    # Button to select all questions
+    if st.sidebar.button('Select All Questions'):
+        st.session_state.questions_selected = available_questions
+    elif 'questions_selected' not in st.session_state or module_selected != st.session_state.last_module or part_selected != st.session_state.last_part:
+        # Reset to the first available question by default if not 'Select All' and if part or module has changed
         st.session_state.questions_selected = [available_questions[0]]
 
+    # Update last viewed module and part
+    st.session_state.last_module = module_selected
+    st.session_state.last_part = part_selected
+
+    # Multiselect widget with session state management
     questions_selected = st.sidebar.multiselect('Select Questions', options=available_questions, default=st.session_state.questions_selected)
 
-    # Update session state
-    st.session_state.questions_selected = questions_selected
-
-    if st.sidebar.button('Select All Questions'):
-        # Update the multiselect widget indirectly via session state
-        st.session_state.questions_selected = available_questions
-        st.experimental_rerun()
-
+    # Display selected questions
     if questions_selected:
-        st.sidebar.markdown("### You selected:")
+        st.sidebar.markdown("#### You selected:")
         st.sidebar.markdown("* " + "\n* ".join(questions_selected))
     else:
         st.sidebar.write("No questions selected")
-        
+
     search_button = st.sidebar.button("Search")
+
 
     if search_button: 
         # Filter data based on selections
@@ -68,24 +80,40 @@ def app():
         # Display the data
         if not filtered_data.empty:
             st.write("")
+            module_selected1 = module_selected.split(':')[1]
             #st.write("### Score Comparison by Program", filtered_data[['Program', 'Score']])
             # Create and display an Altair chart for vertical comparison
             chart = alt.Chart(filtered_data).mark_bar().encode(
-                y='Question:N',  # Flipped; now using Question on the y-axis
-                x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 5]),  # Using Score on the x-axis with a defined domain
-                   axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])), 
-                color='Question:N',  # Optional: coloring bars by question
-                tooltip=['Question', 'Score']  # Tooltips on hover
+                y=alt.Y('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),
+                    axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])),
+                color=alt.Color('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                tooltip=['Question', 'Score', 'Level', 'Description']
             ).properties(
                 width=600,
-                height=300,
-                title='Score by Question Comparison within Part'
-            ).configure_axis(
+                height=600,
+                title=f'Comparison of Score by Questions within {module_selected1}: {part_selected}'
+            )
+
+            # Add text labels on each bar
+            text = chart.mark_text(
+                align='left',  # Adjust alignment here
+                baseline='middle',
+                color='black'
+            ).encode(
+                text='Level:N',
+            )
+
+            # Combine the chart and the text
+            final_chart = alt.layer(chart, text).configure_axis(
                 labelFontSize=12,
                 titleFontSize=14
             ).interactive()
 
-            st.altair_chart(chart, use_container_width=True)
+            # Display the chart in a Streamlit container
+            st.altair_chart(final_chart, use_container_width=True)
+
+
         else:
             st.write("No data available for the selected criteria.")
 
