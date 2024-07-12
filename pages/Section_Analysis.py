@@ -35,7 +35,7 @@ def app():
 
     # Place the image and title in the columns
     with col1:
-        st.image(image, width=250)
+        st.image(image, width=230)
 
     with col2:
         st.title('🇺🇬  Comparison of Scores of Questions Within One Section Within the Selected Institution')
