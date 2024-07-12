@@ -133,7 +133,7 @@ def app():
                 st.write("")
                 base = alt.Chart(filtered_data).mark_arc().encode(
                     theta=alt.Theta('Score:Q').stack(True),  
-                    color=alt.Color('Question:N'),
+                    color=alt.Color('Question:N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
                     tooltip=['Question', 'Score', 'Level', 'Description'] 
                 )
 
