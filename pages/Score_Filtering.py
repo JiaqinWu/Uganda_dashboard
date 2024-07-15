@@ -46,22 +46,22 @@ def app():
 
     # Button to select all questions
     if st.sidebar.button('Select All Scores'):
-        st.session_state.scores_selected = list(sorted_unique_scores)
-    elif 'scores_selected' not in st.session_state or program_selected != st.session_state.last_program:
+        st.session_state.scores_selected1 = list(sorted_unique_scores)
+    elif 'scores_selected1' not in st.session_state or program_selected != st.session_state.last_program:
         # Reset to the first available question by default if not 'Select All' and if part or module has changed
-        st.session_state.scores_selected = [sorted_unique_scores[0]]
+        st.session_state.scores_selected1 = [sorted_unique_scores[0]]
 
-    scores_selected = st.sidebar.multiselect(
+    scores_selected1 = st.sidebar.multiselect(
         'Select Score(s)',
         sorted_unique_scores,
-        default=st.session_state.scores_selected) #sorted_unique_scores
+        default=st.session_state.scores_selected1) #sorted_unique_scores
 
-    st.session_state.scores_selected = scores_selected
+    st.session_state.scores_selected1 = scores_selected1
     
     # Displaying the selected options in the sidebar
-    scores_selected1 = [str(score) for score in scores_selected]
-    if scores_selected:  # Checks if any score is selected
-        st.sidebar.markdown(f"#### You selected: {', '.join(scores_selected1)}")
+    scores_selected11 = [str(score) for score in scores_selected1]
+    if scores_selected1:  # Checks if any score is selected
+        st.sidebar.markdown(f"#### You selected: {', '.join(scores_selected11)}")
     else:
         st.sidebar.markdown("#### No score selected")
     
@@ -82,7 +82,7 @@ def app():
     if search_button: 
         # Filter data based on selections
         filtered_data = df[(df['Program'] == program_selected) & 
-                        (df['Score'].isin(scores_selected))]
+                        (df['Score'].isin(scores_selected1))]
         filtered_data = filtered_data.sort_values(['module', 'section', 'Qn'])
 
         # Display the data
@@ -91,8 +91,8 @@ def app():
             #st.write("### Score Comparison by Program", filtered_data[['Program', 'Score']])
 
             filtered_data['Section'] = filtered_data['Part']
-            records = filtered_data[['Institution','Module','Section','Question','Score']].reset_index().drop(columns='index')
-            st.markdown(f"#### Questions with Score of {', '.join(scores_selected1)} within Institution {program_selected} are shown below:")
+            records = filtered_data[['Institution','Module','Section','Question','Score','Level','Description']].reset_index().drop(columns='index')
+            st.markdown(f"#### Questions with Score of {', '.join(scores_selected11)} within Institution {program_selected} are shown below:")
             st.dataframe(records) 
 
 

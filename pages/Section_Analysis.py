@@ -203,7 +203,7 @@ def app():
             
             else:
                 filtered_data['Section'] = filtered_data['Part']
-                records = filtered_data[['Institution', 'Module','Section','Question','Score']].reset_index().drop(columns='index')
+                records = filtered_data[['Institution', 'Module','Section','Question','Score','Level','Description']].reset_index().drop(columns='index')
                 st.markdown(f"#### Comparison of Score by Questions in Institution {program_selected} are shown below:")
                 st.dataframe(records) 
 
