@@ -65,10 +65,10 @@ def app():
             if plot_selected == 'Bar':
                 st.write("")
                 chart = alt.Chart(filtered_data).mark_bar().encode(
-                    y=alt.Y('Program:N', sort=filtered_data['Program'].unique()),  # Using :N to denote a nominal categorical field
+                    y=alt.Y('Institution:N', sort=filtered_data['Institution'].unique()),  # Using :N to denote a nominal categorical field
                     x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),  # Using Score on the x-axis with a defined domain
                     axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])), 
-                    color='Program:N',  # Optional: coloring bars by Program
+                    color='Institution:N',  # Optional: coloring bars by Program
                     tooltip=['Institution', 'Score', 'Level', 'Description']  # Optional: tooltips on hover
                 ).properties(
                     width=600,
@@ -88,7 +88,7 @@ def app():
                 final_chart = alt.layer(chart, text).configure_axis(
                     labelFontSize=12,
                     titleFontSize=14
-                ).interactive()
+                ) #.interactive()
 
                 # Display the chart in a Streamlit container
                 st.altair_chart(final_chart, use_container_width=True)

@@ -144,7 +144,7 @@ def app():
                 final_chart = alt.layer(chart, text).configure_axis(
                     labelFontSize=12,
                     titleFontSize=14
-                ).interactive()
+                )#.interactive()
 
                 # Display the chart in a Streamlit container
                 st.altair_chart(final_chart, use_container_width=True)
