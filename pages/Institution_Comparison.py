@@ -47,7 +47,7 @@ def app():
     part_selected = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected]['Part'].unique())
     question_selected = st.sidebar.selectbox('Select Question', df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique())
     st.sidebar.write("You selected:", question_selected)
-    plot_selected = st.sidebar.selectbox('Select Chart Type',['Bar','Pie','Radar'],index=0)
+    plot_selected = st.sidebar.selectbox('Select Visualization Type',['Bar Plot','Pie Plot','Radar Plot', 'Table'],index=0)
     search_button = st.sidebar.button("Search")
 
     if search_button: 
@@ -61,8 +61,15 @@ def app():
         if not filtered_data.empty:
             module_selected1 = module_selected.split(':')[1]
             #st.write("### Score Comparison by Program", filtered_data[['Program', 'Score']])
+            if question_selected == 'Q5. Relevant program documents such as the ones below are all developed and disseminated to appropriate staff during start up\n-    Theory of change/LF\n-    Risk and Mitigation plan\n-    Performance Monitoring Plan\n-    Procurement Plan\n-    IRB/ethical reviews\n-    HR Plan\n-    Communication Plan\n-    Strategic Plan':
+                question_selected1 = 'Q5. Relevant program documents such as the ones below are all developed and disseminated to appropriate staff during start up'
+            elif question_selected == 'Q6. There is an established process for project teams to meet regularly and evaluate project performance and challenges and minutes are archived.\n\n(Includes project management, clinical management, senior management)':
+                question_selected1 = 'Q6. There is an established process for project teams to meet regularly and evaluate project performance and challenges and minutes are archived.'
+            else:
+                question_selected1 = question_selected
+
             # Create and display an Altair chart
-            if plot_selected == 'Bar':
+            if plot_selected == 'Bar Plot':
                 st.write("")
                 chart = alt.Chart(filtered_data).mark_bar().encode(
                     y=alt.Y('Institution:N', sort=filtered_data['Institution'].unique()),  # Using :N to denote a nominal categorical field
@@ -73,8 +80,12 @@ def app():
                 ).properties(
                     width=600,
                     height=600,
-                    title=f'Bar Chart of Scores by Institution within {module_selected1}: {part_selected}'
-                )
+                    title=alt.TitleParams(
+                        text=[
+                            f"Question: {question_selected1}", 
+                            f"Bar Plot of Scores by Institution within {module_selected1}: {part_selected}"
+                        ]
+                    ))
 
                 text = chart.mark_text(
                     align='left',  # Adjust alignment here
@@ -93,7 +104,7 @@ def app():
                 # Display the chart in a Streamlit container
                 st.altair_chart(final_chart, use_container_width=True)
 
-            elif plot_selected == 'Pie':
+            elif plot_selected == 'Pie Plot':
                 st.write("")
                 base = alt.Chart(filtered_data).mark_arc().encode(
                     theta=alt.Theta('Score:Q').stack(True),  
@@ -108,8 +119,12 @@ def app():
                 final_chart1 = alt.layer(pie, text1).properties(
                     width=600,
                     height=400,
-                    title=f'Pie Chart of Scores Distribution within {module_selected1}: {part_selected}'
-                ).configure_axis(
+                    title=alt.TitleParams(
+                        text=[
+                            f"Question: {question_selected1}", 
+                            f"Pie Plot of Scores by Institution within {module_selected1}: {part_selected}"
+                        ]
+                    )).configure_axis(
                     labelFontSize=12,
                     titleFontSize=14
                 ).interactive()
@@ -117,12 +132,12 @@ def app():
                 # Display the chart in a Streamlit container
                 st.altair_chart(final_chart1, use_container_width=True)
 
-            else:
+            elif plot_selected == 'Radar Plot':
                 # Creating a radar chart
                 fig = px.line_polar(filtered_data, r='Score', theta='Institution', line_close=True,
                                     text = 'Level',
                                     template="plotly_dark",
-                                    title=f'Radar Chart of Scores by Institution within {module_selected1}: {part_selected}',
+                                    title=f"Question: {question_selected1}<br>Radar Plot of Scores by Institution within {module_selected1}: {part_selected}",
                                     hover_data={
                                         'Institution': True,
                                         'Score': True,  
@@ -142,6 +157,12 @@ def app():
 
                 # Displaying the chart in Streamlit
                 st.plotly_chart(fig, use_container_width=True)
+            
+            else:
+                filtered_data['Section'] = filtered_data['Part']
+                records = filtered_data[['Module','Section','Question','Institution', 'Score']].reset_index().drop(columns='index')
+                st.markdown(f"#### Question: {question_selected}\n #### Comparison of Score by Instituion are shown below:")
+                st.dataframe(records) 
 
 
         else:

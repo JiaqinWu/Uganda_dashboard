@@ -42,62 +42,58 @@ def app():
 
     # Ensure the Score column is sorted
     sorted_unique_scores = sorted(df['Score'].unique())
-    # Sidebar for selection
     program_selected = st.sidebar.selectbox('Select Institution', df['Program'].unique())
-    score_selected = st.sidebar.selectbox(
-        'Select Score',
+
+    # Button to select all questions
+    if st.sidebar.button('Select All Scores'):
+        st.session_state.scores_selected = list(sorted_unique_scores)
+    elif 'scores_selected' not in st.session_state or program_selected != st.session_state.last_program:
+        # Reset to the first available question by default if not 'Select All' and if part or module has changed
+        st.session_state.scores_selected = [sorted_unique_scores[0]]
+
+    scores_selected = st.sidebar.multiselect(
+        'Select Score(s)',
         sorted_unique_scores,
-        index=sorted_unique_scores.index(1))
-    st.sidebar.markdown(f"#### You selected: {score_selected}")
-    format_selected = st.sidebar.selectbox('Select Format',['Plot','Table'],index=0)
+        default=st.session_state.scores_selected) #sorted_unique_scores
+
+    st.session_state.scores_selected = scores_selected
+    
+    # Displaying the selected options in the sidebar
+    scores_selected1 = [str(score) for score in scores_selected]
+    if scores_selected:  # Checks if any score is selected
+        st.sidebar.markdown(f"#### You selected: {', '.join(scores_selected1)}")
+    else:
+        st.sidebar.markdown("#### No score selected")
+    
+    # Update last viewed module and part
+    st.session_state.last_program = program_selected
+
+
+    # Sidebar for selection
+    #program_selected = st.sidebar.selectbox('Select Institution', df['Program'].unique())
+    #score_selected = st.sidebar.selectbox(
+        #'Select Score',
+        #sorted_unique_scores,
+        #index=sorted_unique_scores.index(1))
+    #st.sidebar.markdown(f"#### You selected: {score_selected}")
+    #format_selected = st.sidebar.selectbox('Select Format',['Plot','Table'],index=0)
     search_button = st.sidebar.button("Search")
 
     if search_button: 
         # Filter data based on selections
         filtered_data = df[(df['Program'] == program_selected) & 
-                        (df['Score'] == score_selected)]
+                        (df['Score'].isin(scores_selected))]
         filtered_data = filtered_data.sort_values(['module', 'section', 'Qn'])
 
         # Display the data
         if not filtered_data.empty:
             st.write("")
             #st.write("### Score Comparison by Program", filtered_data[['Program', 'Score']])
-            # Create and display an Altair chart
-            if format_selected == 'Plot':
-                chart = alt.Chart(filtered_data).mark_bar().encode(
-                    y=alt.Y('Question:N', sort='ascending'),  # Now just using ascending sort
-                    x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),  # Using Score on the x-axis with a defined domain
-                    axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])), 
-                    color='Program:N',  # Optional: coloring bars by Program
-                    tooltip=['Module','Part', 'Question','Score', 'Level', 'Description']  # Optional: tooltips on hover
-                ).properties(
-                    width=600,
-                    height=600,
-                    title=f'Questions with Score of {score_selected} within Institution {program_selected}'
-                )
 
-                text = chart.mark_text(
-                    align='left',  # Adjust alignment here
-                    baseline='middle',
-                    color='black'
-                ).encode(
-                    text='Level:N',
-                )
-
-                # Combine the chart and the text
-                final_chart = alt.layer(chart, text).configure_axis(
-                    labelFontSize=12,
-                    titleFontSize=14
-                ).interactive()
-
-                # Display the chart in a Streamlit container
-                st.altair_chart(final_chart, use_container_width=True)
-
-            else:
-                filtered_data['Section'] = filtered_data['Part']
-                records = filtered_data[['Institution','Module','Section','Question']].reset_index().drop(columns='index')
-                st.markdown(f"#### Questions with Score of {score_selected} within Institution {program_selected} are shown below:")
-                st.dataframe(records) 
+            filtered_data['Section'] = filtered_data['Part']
+            records = filtered_data[['Institution','Module','Section','Question','Score']].reset_index().drop(columns='index')
+            st.markdown(f"#### Questions with Score of {', '.join(scores_selected1)} within Institution {program_selected} are shown below:")
+            st.dataframe(records) 
 
 
         else:

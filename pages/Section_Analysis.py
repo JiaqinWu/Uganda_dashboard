@@ -100,7 +100,7 @@ def app():
     st.session_state.last_module = module_selected
     st.session_state.last_part = part_selected
     
-    plot_selected = st.sidebar.selectbox('Select Chart Type',['Bar','Pie','Radar'],index=0)
+    plot_selected = st.sidebar.selectbox('Select Visualization Type',['Bar Plot','Pie Plot','Radar Plot','Table'],index=0)
     search_button = st.sidebar.button("Search")
 
 
@@ -117,7 +117,7 @@ def app():
             module_selected1 = module_selected.split(':')[1]
             #st.write("### Score Comparison by Program", filtered_data[['Program', 'Score']])
             # Create and display an Altair chart for vertical comparison
-            if plot_selected == 'Bar':
+            if plot_selected == 'Bar Plot':
                 st.write("")
                 chart = alt.Chart(filtered_data).mark_bar().encode(
                     y=alt.Y('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
@@ -128,7 +128,7 @@ def app():
                 ).properties(
                     width=600,
                     height=600,
-                    title=f'Bar Chart of Scores by Question within {module_selected1}: {part_selected}'
+                    title=f'{program_selected} -- Bar Plot of Scores by Question within {module_selected1}: {part_selected}'
                 )
 
                 # Add text labels on each bar
@@ -149,7 +149,7 @@ def app():
                 # Display the chart in a Streamlit container
                 st.altair_chart(final_chart, use_container_width=True)
 
-            elif plot_selected == 'Pie':
+            elif plot_selected == 'Pie Plot':
                 st.write("")
                 base = alt.Chart(filtered_data).mark_arc().encode(
                     theta=alt.Theta('Score:Q').stack(True),  
@@ -164,7 +164,7 @@ def app():
                 final_chart1 = alt.layer(pie, text1).properties(
                     width=600,
                     height=400,
-                    title=f'Pie Chart of of Scores by Question within {module_selected1}: {part_selected}'
+                    title=f'{program_selected} -- Pie Plot of of Scores by Question within {module_selected1}: {part_selected}'
                 ).configure_axis(
                     labelFontSize=12,
                     titleFontSize=14
@@ -174,13 +174,13 @@ def app():
                 st.altair_chart(final_chart1, use_container_width=True)
 
             
-            else:
+            elif plot_selected == 'Radar Plot':
                  # Creating a radar chart
                 filtered_data['Question1'] = 'Q' + filtered_data['Qn'].astype(str)
                 fig = px.line_polar(filtered_data, r='Score', theta='Question1', line_close=True,
                                     text = 'Level',
                                     template="plotly_dark",
-                                    title=f'Radar Chart of Scores by Question within {module_selected1}: {part_selected}',
+                                    title=f'{program_selected} -- Radar Plot of Scores by Question within {module_selected1}: {part_selected}',
                                     hover_data={
                                         'Question': True,
                                         'Score': True,  
@@ -200,6 +200,12 @@ def app():
 
                 # Displaying the chart in Streamlit
                 st.plotly_chart(fig, use_container_width=True)
+            
+            else:
+                filtered_data['Section'] = filtered_data['Part']
+                records = filtered_data[['Institution', 'Module','Section','Question','Score']].reset_index().drop(columns='index')
+                st.markdown(f"#### Comparison of Score by Questions in Institution {program_selected} are shown below:")
+                st.dataframe(records) 
 
 
 
