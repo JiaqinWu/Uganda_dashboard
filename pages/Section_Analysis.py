@@ -10,7 +10,7 @@ import plotly.express as px
 image = "CGHPI.png"
 df = pd.read_csv('final_uganda.csv', encoding='ISO-8859-1')
 df['Institution'] = df['Program']
-df['Question'] = df['Qn']
+df['question'] = df['Qn']
 df['Module'] = df['Module'].replace('One','One: Leadership and Governance').replace('Two','Two: Program Management').replace('Three','Three: Technical Assistance').\
 replace('Four','Four: Data Use').replace("Five","Five: Sustainability")
 # Define conditions and choices for the text labels
@@ -43,16 +43,31 @@ def app():
         st.sidebar.title('Enter your selections here!')
 
     # Sidebar for selection
-    sorted_unique_scores = sorted(df['Score'].unique())
+    #sorted_unique_scores = sorted(df['Score'].unique())
     program_selected = st.sidebar.selectbox('Select Institution', df['Program'].unique())
     module_selected = st.sidebar.selectbox('Select Module', df['Module'].unique())
     part_selected = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected]['Part'].unique())
     st.sidebar.markdown(f"#### You selected: {part_selected}")
     available_questions = df[(df['Module'] == module_selected) & (df['Part'] == part_selected)]['Question'].unique()
+    available_scores = df[(df['Program'] == program_selected) & (df['Module'] == module_selected) & (df['Part'] == part_selected)]['Score'].unique()
+    sorted_unique_scores = sorted(available_scores)
+
+    # Button to select all questions
+    if st.sidebar.button('Select All Scores'):
+        st.session_state.scores_selected = list(sorted_unique_scores)
+    elif 'scores_selected' not in st.session_state or module_selected != st.session_state.last_module \
+        or program_selected != st.session_state.last_program or part_selected != st.session_state.last_part:
+        # Reset to the first available question by default if not 'Select All' and if part or module has changed
+        st.session_state.scores_selected = [sorted_unique_scores[0]]
+    
+
     scores_selected = st.sidebar.multiselect(
         'Select Score(s)',
         sorted_unique_scores,
-        default=sorted_unique_scores)
+        default=st.session_state.scores_selected) #sorted_unique_scores
+
+    st.session_state.scores_selected = scores_selected
+    
     # Displaying the selected options in the sidebar
     scores_selected1 = [str(score) for score in scores_selected]
     if scores_selected:  # Checks if any score is selected
@@ -63,23 +78,27 @@ def app():
     # Button to select all questions
     if st.sidebar.button('Select All Questions'):
         st.session_state.questions_selected = available_questions
-    elif 'questions_selected' not in st.session_state or module_selected != st.session_state.last_module or part_selected != st.session_state.last_part:
+    elif 'questions_selected' not in st.session_state or module_selected != st.session_state.last_module \
+        or program_selected != st.session_state.last_program or part_selected != st.session_state.last_part:
         # Reset to the first available question by default if not 'Select All' and if part or module has changed
         st.session_state.questions_selected = [available_questions[0]]
 
-    # Update last viewed module and part
-    st.session_state.last_module = module_selected
-    st.session_state.last_part = part_selected
-
     # Multiselect widget with session state management
     questions_selected = st.sidebar.multiselect('Select Questions', options=available_questions, default=st.session_state.questions_selected)
+
+    st.session_state.questions_selected = questions_selected
 
     # Display selected questions
     if questions_selected:
         st.sidebar.markdown("#### You selected:")
         st.sidebar.markdown("* " + "\n* ".join(questions_selected))
     else:
-        st.sidebar.write("No questions selected")
+        st.sidebar.write("#### No questions selected")
+    
+    # Update last viewed module and part
+    st.session_state.last_program = program_selected
+    st.session_state.last_module = module_selected
+    st.session_state.last_part = part_selected
     
     plot_selected = st.sidebar.selectbox('Select Chart Type',['Bar','Pie','Radar'],index=0)
     search_button = st.sidebar.button("Search")
@@ -134,7 +153,7 @@ def app():
                 st.write("")
                 base = alt.Chart(filtered_data).mark_arc().encode(
                     theta=alt.Theta('Score:Q').stack(True),  
-                    color=alt.Color('Question :N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                    color=alt.Color('Question:N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
                     tooltip=['Question', 'Score', 'Level', 'Description'] 
                 )
 
