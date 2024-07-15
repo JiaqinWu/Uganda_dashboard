@@ -72,7 +72,7 @@ def app():
                     tooltip=['Institution', 'Score', 'Level', 'Description']  # Optional: tooltips on hover
                 ).properties(
                     width=600,
-                    height=300,
+                    height=600,
                     title=f'Bar Chart of Scores by Institution within {module_selected1}: {part_selected}'
                 )
 
