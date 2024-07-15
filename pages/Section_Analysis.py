@@ -10,6 +10,7 @@ import plotly.express as px
 image = "CGHPI.png"
 df = pd.read_csv('final_uganda.csv', encoding='ISO-8859-1')
 df['Institution'] = df['Program']
+df['Question'] = df['Qn']
 df['Module'] = df['Module'].replace('One','One: Leadership and Governance').replace('Two','Two: Program Management').replace('Three','Three: Technical Assistance').\
 replace('Four','Four: Data Use').replace("Five","Five: Sustainability")
 # Define conditions and choices for the text labels
@@ -133,7 +134,7 @@ def app():
                 st.write("")
                 base = alt.Chart(filtered_data).mark_arc().encode(
                     theta=alt.Theta('Score:Q').stack(True),  
-                    color=alt.Color('Question:N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                    color=alt.Color('Question :N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
                     tooltip=['Question', 'Score', 'Level', 'Description'] 
                 )
 
