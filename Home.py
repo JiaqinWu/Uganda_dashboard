@@ -18,7 +18,7 @@ def app():
 
     # Place the image and title in the columns
     with col1:
-        st.image(image, width=230)
+        st.image(image, width=200)
 
     with col2:
         st.title('🇺🇬  Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)')
