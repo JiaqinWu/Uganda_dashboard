@@ -116,7 +116,7 @@ def app():
 
         filtered_data['Section'] = filtered_data['Part']
         records = filtered_data[['Institution', 'Module', 'Section', 'Question', 'Score', 'Level', 'Description']].reset_index().drop(columns='index')
-        st.markdown(f"#### Default Questions with Score of {', '.join([str(score) for score in [1]])} within Institution {'ROM'} are shown below:")
+        st.markdown(f"#### Questions with Score of {', '.join([str(score) for score in [1]])} within Institution {'ROM'} are shown below:")
         st.dataframe(records)
     else:
         # Filter data based on selections

@@ -146,7 +146,7 @@ def app():
         ).properties(
             width=600,
             height=600,
-            title=f'ROM -- Bar Plot of Scores by Question within One: Leadership and Governance: Governance'
+            title=f'ROM -- Bar Plot of Scores by Question within Leadership and Governance: Governance'
         )
 
         text = chart.mark_text(
