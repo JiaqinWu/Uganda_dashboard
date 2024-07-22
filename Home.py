@@ -13,15 +13,33 @@ def app():
     # Main page content
     st.set_page_config(page_title = 'Dashboard -- Uganda SCORE Survey', page_icon='🇺🇬',layout='wide')
 
-    # Use columns for side-by-side layout
-    col1, col2 = st.columns([1, 3])  # Adjust the width ratio as needed
+    #st.image(image, width=200, use_column_width=False)
+    #st.title('Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)')
 
-    # Place the image and title in the columns
-    with col1:
-        st.image(image, width=200)
+    # Define the image path and title
+    image_path = 'CGHPI.png'
+    title = 'Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)'
 
-    with col2:
-        st.title('🇺🇬  Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)')
+    # Center the image and title using HTML and CSS in Markdown
+    st.markdown(
+        f"""
+        <style>
+        .centered {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 30vh;
+            text-align: center;
+        }}
+        </style>
+        <div class="centered">
+            <img src="{image_path}" width="200" />
+            <h1>{title}</h1>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     ### ACKNOWLEDGEMENT
