@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import altair as alt 
 import numpy as np
+ 
 
 # Import the dataset
 image = "CGHPI.png"
@@ -16,9 +17,17 @@ def app():
     #st.image(image, width=200, use_column_width=False)
     #st.title('Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)')
 
-    # Define the image path and title
-    image_path = 'CGHPI.png'
     title = 'Sustainable Capacity of Local Organizations to Reach and End the HIV/AIDS Pandemic (SCORE)'
+    col1, col2, col3 = st.columns([4, 1, 5])
+
+    with col1:
+        st.write("")
+
+    with col2:
+        st.image(image, width=250)
+
+    with col3:
+        st.write("")
 
     # Center the image and title using HTML and CSS in Markdown
     st.markdown(
@@ -34,12 +43,13 @@ def app():
         }}
         </style>
         <div class="centered">
-            <img src="{image_path}" width="200" />
-            <h1>{title}</h1>
+            <h1 style='text-align: center'>{title}</h1>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+    
 
     st.markdown("""
     ### ACKNOWLEDGEMENT
