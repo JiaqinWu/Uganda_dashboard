@@ -49,35 +49,35 @@ def app():
     )
 
     # Initialize session state
-    if 'initialized_first_page' not in st.session_state:
-        st.session_state.initialized_first_page = True
-        st.session_state.search_button_clicked = False
-        st.session_state.module_selected = 'One: Leadership and Governance'
-        st.session_state.part_selected = 'Governance'
+    if 'initialized_fourth_page' not in st.session_state:
+        st.session_state.initialized_fourth_page = True
+        st.session_state.search_button_clicked1 = False
+        st.session_state.module_selected1 = 'One: Leadership and Governance'
+        st.session_state.part_selected1 = 'Governance'
 
         
 
     # Sidebar for selection
     st.sidebar.title('Enter your selections here!')
-    module_selected = st.sidebar.selectbox('Select Module', df['Module'].unique())
-    part_selected = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected]['Section'].unique())
-    st.sidebar.write("You selected:", part_selected)
+    module_selected1 = st.sidebar.selectbox('Select Module', df['Module'].unique())
+    part_selected1 = st.sidebar.selectbox('Select Section', df[df['Module'] == module_selected1]['Section'].unique())
+    st.sidebar.write("You selected:", part_selected1)
     search_button = st.sidebar.button("Search")
 
 
     if search_button:
-        st.session_state.search_button_clicked = True
-        st.session_state.module_selected = module_selected
-        st.session_state.part_selected = part_selected
+        st.session_state.search_button_clicked1 = True
+        st.session_state.module_selected1 = module_selected1
+        st.session_state.part_selected1 = part_selected1
     else:
         # Use session state values if the button has not been clicked
-        module_selected = st.session_state.module_selected
-        part_selected = st.session_state.part_selected
+        module_selected1 = st.session_state.module_selected1
+        part_selected1 = st.session_state.part_selected1
 
 
     
 
-    if not st.session_state.search_button_clicked:
+    if not st.session_state.search_button_clicked1:
         # Display default bar plot   
         filtered_data = df[(df['Module'] == 'One: Leadership and Governance') & 
                         (df['Section'] == 'Governance')].reset_index()
@@ -88,10 +88,10 @@ def app():
 
     else:
         # Show data based on selections
-        st.markdown(f"#### Metrics for questions within {module_selected}: {part_selected} are shown below:")
+        st.markdown(f"#### Metrics for questions within {module_selected1}: {part_selected1} are shown below:")
         # Filter data based on selections
-        filtered_data = df[(df['Module'] == module_selected) & 
-                        (df['Section'] == part_selected)].reset_index()
+        filtered_data = df[(df['Module'] == module_selected1) & 
+                        (df['Section'] == part_selected1)].reset_index()
 
         records = filtered_data[['Module', 'Section', 'Question', '1: Nonexistent', '2: Basic','3: Adequate','4: Comprehensive','5: Exceptional']].reset_index().drop(columns='index')
         st.dataframe(records)
