@@ -63,12 +63,6 @@ def app():
     
     st.sidebar.title('Enter your selections here!')
     
-    # Initialize session state for the second page
-    if 'initialized_second_page' not in st.session_state:
-        st.session_state.initialized_second_page = True
-        st.session_state.search_button_clicked = False
-        st.session_state.last_program = 'ROM'
-        st.session_state.scores_selected1 = [1]
 
     # Ensure the Score column is sorted
     sorted_unique_scores = sorted(df['Score'].unique())
@@ -94,44 +88,21 @@ def app():
     else:
         st.sidebar.markdown("#### No score selected")
 
-    # Sidebar for selection
-    search_button = st.sidebar.button("Search")
 
-    if search_button:
-        st.session_state.search_button_clicked = True
-        st.session_state.scores_selected1 = scores_selected1
-        st.session_state.last_program = program_selected
 
-    # Use session state values if the button has not been clicked
-    if not st.session_state.search_button_clicked:
-        scores_selected1 = st.session_state.scores_selected1
-        program_selected = st.session_state.last_program
+    # Filter data based on selections
+    filtered_data = df[(df['Program'] == program_selected) & 
+                        (df['Score'].isin(scores_selected1))]
+    filtered_data = filtered_data.sort_values(['Module', 'Part', 'Question'])
 
-    # Default data display when the tab is first opened
-    if not st.session_state.search_button_clicked:
-        # Filter data based on default selections
-        filtered_data = df[(df['Program'] == 'ROM') & 
-                           (df['Score'].isin([1]))]
-        filtered_data = filtered_data.sort_values(['Module', 'Part', 'Question'])
-
+    # Display the data
+    if not filtered_data.empty:
         filtered_data['Section'] = filtered_data['Part']
         records = filtered_data[['Institution', 'Module', 'Section', 'Question', 'Score', 'Level', 'Description']].reset_index().drop(columns='index')
-        st.markdown(f"#### Questions with Score of {', '.join([str(score) for score in [1]])} within Institution {'ROM'} are shown below:")
+        st.markdown(f"#### Questions with Score of {', '.join(scores_selected11)} within Institution {program_selected} are shown below:")
         st.dataframe(records)
     else:
-        # Filter data based on selections
-        filtered_data = df[(df['Program'] == program_selected) & 
-                           (df['Score'].isin(scores_selected1))]
-        filtered_data = filtered_data.sort_values(['Module', 'Part', 'Question'])
-
-        # Display the data
-        if not filtered_data.empty:
-            filtered_data['Section'] = filtered_data['Part']
-            records = filtered_data[['Institution', 'Module', 'Section', 'Question', 'Score', 'Level', 'Description']].reset_index().drop(columns='index')
-            st.markdown(f"#### Questions with Score of {', '.join(scores_selected11)} within Institution {program_selected} are shown below:")
-            st.dataframe(records)
-        else:
-            st.write("No data available for the selected criteria.")
+        st.write("No data available for the selected criteria.")
 
 if __name__ == "__main__":
     app()

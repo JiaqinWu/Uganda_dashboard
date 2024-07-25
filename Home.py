@@ -84,7 +84,6 @@ def app():
     - **Uganda Episcopal Conference (UEC)**
     - **Uganda Protestant Medical Bureau (UPMB)**
     - **Uganda Muslim Medical Bureau (UMMB)**
-    - **Uganda Orthodox Medical Bureau (UOMB)**
     """)
                             
     st.markdown("""

@@ -65,16 +65,6 @@ def app():
     
     st.sidebar.title('Enter your selections here!')
 
-    # Initialize session state for the third page
-    if 'initialized_third_page' not in st.session_state:
-        st.session_state.initialized_third_page = True
-        st.session_state.search_button_clicked = False
-        st.session_state.last_module = 'One: Leadership and Governance'
-        st.session_state.last_part = 'Governance'
-        st.session_state.last_program = 'ROM'
-        st.session_state.scores_selected = sorted(df['Score'].unique())
-        st.session_state.plot_selected = 'Bar Plot' 
-
     # Ensure the Score column is sorted
     program_selected = st.sidebar.selectbox('Select Institution', df['Program'].unique())
     module_selected = st.sidebar.selectbox('Select Module', df['Module'].unique())
@@ -114,148 +104,99 @@ def app():
     st.session_state.last_part = part_selected
     
     plot_selected = st.sidebar.selectbox('Select Visualization Type',['Bar Plot','Pie Plot','Radar Plot','Table'],index=0)
-    search_button = st.sidebar.button("Search")
 
-    if search_button:
-        st.session_state.search_button_clicked = True
-        st.session_state.last_module = module_selected
-        st.session_state.last_part = part_selected
-        st.session_state.scores_selected = scores_selected
-        st.session_state.last_program = program_selected
-    else:
-        # Use session state values if the button has not been clicked
-        module_selected = st.session_state.last_module
-        part_selected = st.session_state.last_part
-        scores_selected = st.session_state.scores_selected
-        program_selected = st.session_state.last_program
 
         
+    # Filter data based on selections
+    filtered_data = df[(df['Module'] == module_selected) & 
+                        (df['Part'] == part_selected) & 
+                        (df['Program'] == program_selected) &
+                        (df['Score'].isin(scores_selected))]
+    if not filtered_data.empty:
+        module_selected1 = module_selected.split(':')[1]
+        if plot_selected == 'Bar Plot':
+            st.write("")
+            chart = alt.Chart(filtered_data).mark_bar().encode(
+                y=alt.Y('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),
+                        axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])),
+                color=alt.Color('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                tooltip=['Question', 'Score', 'Level', 'Description']
+            ).properties(
+                width=600,
+                height=600,
+                title=f'{program_selected} -- Bar Plot of Scores by Question within {module_selected1}: {part_selected}'
+            )
 
-    if not st.session_state.search_button_clicked:
-        # Default visualization for ROM with all scores
-        filtered_data = df[(df['Program'] == 'ROM')& (df['Module'] == 'One: Leadership and Governance') & 
-                        (df['Part'] == ' Governance')& (df['Score'].isin([1,4,5]))]
+            text = chart.mark_text(
+                align='left',
+                baseline='middle',
+                color='black'
+            ).encode(
+                text='Level:N',
+            )
 
-        st.write("")
-        chart = alt.Chart(filtered_data).mark_bar().encode(
-            y=alt.Y('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
-            x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),
-                    axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])),
-            color=alt.Color('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
-            tooltip=['Question', 'Score', 'Level', 'Description']
-        ).properties(
-            width=600,
-            height=600,
-            title=f'ROM -- Bar Plot of Scores by Question within Leadership and Governance: Governance'
-        )
+            final_chart = alt.layer(chart, text).configure_axis(
+                labelFontSize=12,
+                titleFontSize=14
+            )
 
-        text = chart.mark_text(
-            align='left',
-            baseline='middle',
-            color='black'
-        ).encode(
-            text='Level:N',
-        )
+            st.altair_chart(final_chart, use_container_width=True)
 
-        final_chart = alt.layer(chart, text).configure_axis(
-            labelFontSize=12,
-            titleFontSize=14
-        )
+        elif plot_selected == 'Pie Plot':
+            st.write("")
+            base = alt.Chart(filtered_data).mark_arc().encode(
+                theta=alt.Theta('Score:Q').stack(True),  
+                color=alt.Color('Question:N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
+                tooltip=['Question', 'Score', 'Level', 'Description'] 
+            )
 
-        st.altair_chart(final_chart, use_container_width=True)
+            pie = base.mark_arc(outerRadius = 120)
+            text1 = base.mark_text(radius=150, size=12).encode(text="Level:N")
 
+            final_chart1 = alt.layer(pie, text1).properties(
+                width=600,
+                height=400,
+                title=f'{program_selected} -- Pie Plot of Scores by Question within {module_selected1}: {part_selected}'
+            ).configure_axis(
+                labelFontSize=12,
+                titleFontSize=14
+            ).interactive()
+
+            st.altair_chart(final_chart1, use_container_width=True)
+
+        elif plot_selected == 'Radar Plot':
+            filtered_data['Question1'] = 'Q' + filtered_data['Qn'].astype(str)
+            fig = px.line_polar(filtered_data, r='Score', theta='Question1', line_close=True,
+                                text='Level',
+                                template="plotly_dark",
+                                title=f'{program_selected} -- Radar Plot of Scores by Question within {module_selected1}: {part_selected}',
+                                hover_data={
+                                    'Question': True,
+                                    'Score': True,  
+                                    'Level': True,  
+                                    'Description': True 
+                                })
+            
+            fig.update_traces(textposition='bottom center')
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(showticklabels=True, tickangle=0),
+                    angularaxis=dict(rotation=90, direction='clockwise', tickfont_size=15)
+                ),
+                font=dict(size=8)
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+        
+        else:
+            filtered_data['Section'] = filtered_data['Part']
+            records = filtered_data[['Institution', 'Module','Section','Question','Score','Level','Description']].reset_index().drop(columns='index')
+            st.markdown(f"#### Comparison of Score by Questions in Institution {program_selected} are shown below:")
+            st.dataframe(records)
 
     else:
-        # Filter data based on selections
-        filtered_data = df[(df['Module'] == module_selected) & 
-                           (df['Part'] == part_selected) & 
-                           (df['Program'] == program_selected) &
-                           (df['Score'].isin(scores_selected))]
-        if not filtered_data.empty:
-            module_selected1 = module_selected.split(':')[1]
-            if plot_selected == 'Bar Plot':
-                st.write("")
-                chart = alt.Chart(filtered_data).mark_bar().encode(
-                    y=alt.Y('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
-                    x=alt.X('Score:Q', scale=alt.Scale(domain=[0, 6]),
-                            axis=alt.Axis(values=[0, 1, 2, 3, 4, 5])),
-                    color=alt.Color('Question:N', sort=alt.EncodingSortField(field='Qn', order='ascending')),
-                    tooltip=['Question', 'Score', 'Level', 'Description']
-                ).properties(
-                    width=600,
-                    height=600,
-                    title=f'{program_selected} -- Bar Plot of Scores by Question within {module_selected1}: {part_selected}'
-                )
-
-                text = chart.mark_text(
-                    align='left',
-                    baseline='middle',
-                    color='black'
-                ).encode(
-                    text='Level:N',
-                )
-
-                final_chart = alt.layer(chart, text).configure_axis(
-                    labelFontSize=12,
-                    titleFontSize=14
-                )
-
-                st.altair_chart(final_chart, use_container_width=True)
-
-            elif plot_selected == 'Pie Plot':
-                st.write("")
-                base = alt.Chart(filtered_data).mark_arc().encode(
-                    theta=alt.Theta('Score:Q').stack(True),  
-                    color=alt.Color('Question:N',sort=alt.EncodingSortField(field='Qn', order='ascending')),
-                    tooltip=['Question', 'Score', 'Level', 'Description'] 
-                )
-
-                pie = base.mark_arc(outerRadius = 120)
-                text1 = base.mark_text(radius=150, size=12).encode(text="Level:N")
-
-                final_chart1 = alt.layer(pie, text1).properties(
-                    width=600,
-                    height=400,
-                    title=f'{program_selected} -- Pie Plot of Scores by Question within {module_selected1}: {part_selected}'
-                ).configure_axis(
-                    labelFontSize=12,
-                    titleFontSize=14
-                ).interactive()
-
-                st.altair_chart(final_chart1, use_container_width=True)
-
-            elif plot_selected == 'Radar Plot':
-                filtered_data['Question1'] = 'Q' + filtered_data['Qn'].astype(str)
-                fig = px.line_polar(filtered_data, r='Score', theta='Question1', line_close=True,
-                                    text='Level',
-                                    template="plotly_dark",
-                                    title=f'{program_selected} -- Radar Plot of Scores by Question within {module_selected1}: {part_selected}',
-                                    hover_data={
-                                        'Question': True,
-                                        'Score': True,  
-                                        'Level': True,  
-                                        'Description': True 
-                                    })
-                
-                fig.update_traces(textposition='bottom center')
-                fig.update_layout(
-                    polar=dict(
-                        radialaxis=dict(showticklabels=True, tickangle=0),
-                        angularaxis=dict(rotation=90, direction='clockwise', tickfont_size=15)
-                    ),
-                    font=dict(size=8)
-                )
-
-                st.plotly_chart(fig, use_container_width=True)
-            
-            else:
-                filtered_data['Section'] = filtered_data['Part']
-                records = filtered_data[['Institution', 'Module','Section','Question','Score','Level','Description']].reset_index().drop(columns='index')
-                st.markdown(f"#### Comparison of Score by Questions in Institution {program_selected} are shown below:")
-                st.dataframe(records)
-
-        else:
-            st.markdown("### No data available for the selected criteria.")
+        st.markdown("### No data available for the selected criteria.")
 
 if __name__ == "__main__":
     app()
