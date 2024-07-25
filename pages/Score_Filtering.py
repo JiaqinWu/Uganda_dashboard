@@ -80,6 +80,7 @@ def app():
         sorted_unique_scores,
         default=st.session_state.scores_selected1
     )
+    st.session_state.scores_selected1 = scores_selected1
 
     # Displaying the selected options in the sidebar
     scores_selected11 = [str(score) for score in scores_selected1]
