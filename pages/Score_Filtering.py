@@ -88,6 +88,9 @@ def app():
     else:
         st.sidebar.markdown("#### No score selected")
 
+     # Update last viewed module and part
+    st.session_state.last_program = program_selected
+
 
 
     # Filter data based on selections
